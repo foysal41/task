@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskCreateSlider;
 use App\DataTables\taskDataTable;
-
+use App\Models\task;
+use Illuminate\Contracts\View\View;
 
 class TaskController extends Controller
 {
@@ -24,15 +26,20 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+         return view('task.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskCreateSlider $request)
     {
-        //
+        $task = new Task();
+        $task->title = $request->title;
+        $task->description = $request->description;
+        $task->status = $request->status;
+        $task->save();
+        return redirect()->route('task.index')->with('success', 'Task created successfully');
     }
 
     /**
@@ -46,9 +53,10 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id) : View
     {
-        //
+        $task = Task::findorFail($id);
+        return view('task.edit' , compact('task'));
     }
 
     /**
@@ -56,7 +64,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request->all());
     }
 
     /**

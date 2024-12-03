@@ -23,6 +23,11 @@ class taskDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', 'task.action')
+            ->addColumn('action', function($query){
+                $edit = "<a href='".route('task.edit' , $query->id)."' class='btn btn-primary btn-sm '> <i class='fas fa-edit'>Edit</i></a>";
+                $delete = "<a href='' class='btn btn-danger btn-sm ml-2 ml-2'> <i class='fas fa-trash'>Delete</i></a>";
+                return $edit.$delete;
+            })
             ->setRowId('id');
     }
 
@@ -69,7 +74,7 @@ class taskDataTable extends DataTable
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(60)
+                  ->width(120)
                   ->addClass('text-center'),
 
         ];
